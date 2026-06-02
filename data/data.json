@@ -1,0 +1,1250 @@
+{
+  "s01": {
+    "segmento": "El gato",
+    "transiciones": {
+      "a11": 0.088,
+      "a12": 0.074,
+      "a10": 0.096,
+      "a09": 0.085,
+      "a05": 0.081,
+      "v15": 0.085,
+      "v08": 0.096,
+      "v11": 0.078,
+      "v14": 0.093,
+      "v13": 0.082
+    }
+  },
+  "s02": {
+    "segmento": "La niña",
+    "transiciones": {
+      "a08": 0.097,
+      "a07": 0.093,
+      "a01": 0.083,
+      "a06": 0.077,
+      "a04": 0.084,
+      "v12": 0.079,
+      "v13": 0.084,
+      "v14": 0.091,
+      "v10": 0.08,
+      "v06": 0.088
+    }
+  },
+  "s03": {
+    "segmento": "Un pájaro",
+    "transiciones": {
+      "a02": 0.093,
+      "a06": 0.092,
+      "a05": 0.08,
+      "a08": 0.084,
+      "a07": 0.09,
+      "v13": 0.087,
+      "v08": 0.079,
+      "v06": 0.08,
+      "v10": 0.095,
+      "v04": 0.094
+    }
+  },
+  "s04": {
+    "segmento": "Mi hermano",
+    "transiciones": {
+      "a05": 0.081,
+      "a04": 0.1,
+      "a09": 0.089,
+      "a11": 0.086,
+      "a07": 0.075,
+      "v02": 0.088,
+      "v14": 0.091,
+      "v04": 0.073,
+      "v13": 0.076,
+      "v10": 0.085
+    }
+  },
+  "s05": {
+    "segmento": "El perro",
+    "transiciones": {
+      "a03": 0.083,
+      "a12": 0.075,
+      "a01": 0.088,
+      "a02": 0.098,
+      "a10": 0.088,
+      "v07": 0.1,
+      "v11": 0.078,
+      "v03": 0.088,
+      "v05": 0.091,
+      "v02": 0.078
+    }
+  },
+  "s06": {
+    "segmento": "La profesora",
+    "transiciones": {
+      "a03": 0.081,
+      "a06": 0.085,
+      "a11": 0.099,
+      "a12": 0.075,
+      "a01": 0.088,
+      "v10": 0.071,
+      "v04": 0.095,
+      "v02": 0.084,
+      "v06": 0.076,
+      "v03": 0.093
+    }
+  },
+  "s07": {
+    "segmento": "El anciano",
+    "transiciones": {
+      "a11": 0.075,
+      "a04": 0.083,
+      "a01": 0.096,
+      "a08": 0.087,
+      "a06": 0.08,
+      "v14": 0.082,
+      "v01": 0.076,
+      "v09": 0.096,
+      "v06": 0.086,
+      "v13": 0.076
+    }
+  },
+  "s08": {
+    "segmento": "La tormenta",
+    "transiciones": {
+      "a04": 0.095,
+      "a09": 0.084,
+      "a02": 0.084,
+      "a07": 0.079,
+      "a12": 0.095,
+      "v08": 0.091,
+      "v13": 0.09,
+      "v09": 0.093,
+      "v01": 0.077,
+      "v11": 0.07
+    }
+  },
+  "s09": {
+    "segmento": "El tren",
+    "transiciones": {
+      "a11": 0.087,
+      "a08": 0.084,
+      "a09": 0.077,
+      "a10": 0.094,
+      "a05": 0.099,
+      "v09": 0.081,
+      "v06": 0.076,
+      "v12": 0.095,
+      "v10": 0.09,
+      "v05": 0.078
+    }
+  },
+  "s10": {
+    "segmento": "El niño",
+    "transiciones": {
+      "a12": 0.09,
+      "a02": 0.09,
+      "a09": 0.096,
+      "a08": 0.076,
+      "a06": 0.077,
+      "v05": 0.086,
+      "v12": 0.092,
+      "v07": 0.082,
+      "v13": 0.088,
+      "v14": 0.076
+    }
+  },
+  "s11": {
+    "segmento": "La gata",
+    "transiciones": {
+      "a06": 0.094,
+      "a07": 0.09,
+      "a10": 0.071,
+      "a01": 0.099,
+      "a04": 0.078,
+      "v12": 0.085,
+      "v05": 0.085,
+      "v06": 0.097,
+      "v09": 0.078,
+      "v13": 0.09
+    }
+  },
+  "s12": {
+    "segmento": "Un extraño",
+    "transiciones": {
+      "a09": 0.092,
+      "a04": 0.086,
+      "a03": 0.092,
+      "a11": 0.083,
+      "a12": 0.077,
+      "v05": 0.097,
+      "v12": 0.077,
+      "v03": 0.078,
+      "v14": 0.08,
+      "v13": 0.087
+    }
+  },
+  "a01": {
+    "segmento": "alegre",
+    "transiciones": {
+      "v03": 0.094,
+      "v04": 0.069,
+      "v02": 0.078,
+      "v15": 0.073,
+      "v06": 0.096,
+      "v13": 0.063,
+      "v01": 0.082,
+      "v14": 0.086
+    }
+  },
+  "a02": {
+    "segmento": "inteligente",
+    "transiciones": {
+      "v12": 0.095,
+      "v14": 0.084,
+      "v10": 0.063,
+      "v05": 0.085,
+      "v09": 0.093,
+      "v15": 0.069,
+      "v13": 0.079,
+      "v07": 0.063
+    }
+  },
+  "a03": {
+    "segmento": "triste",
+    "transiciones": {
+      "v02": 0.064,
+      "v03": 0.083,
+      "v07": 0.076,
+      "v13": 0.092,
+      "v05": 0.062,
+      "v04": 0.079,
+      "v10": 0.073,
+      "v01": 0.092
+    }
+  },
+  "a04": {
+    "segmento": "enorme",
+    "transiciones": {
+      "v06": 0.061,
+      "v04": 0.074,
+      "v13": 0.068,
+      "v10": 0.082,
+      "v08": 0.087,
+      "v14": 0.095,
+      "v05": 0.079,
+      "v12": 0.086
+    }
+  },
+  "a05": {
+    "segmento": "silencioso",
+    "transiciones": {
+      "v06": 0.058,
+      "v04": 0.062,
+      "v12": 0.081,
+      "v05": 0.085,
+      "v07": 0.072,
+      "v09": 0.093,
+      "v14": 0.067,
+      "v15": 0.098
+    }
+  },
+  "a06": {
+    "segmento": "rápido",
+    "transiciones": {
+      "v15": 0.093,
+      "v13": 0.065,
+      "v08": 0.083,
+      "v05": 0.066,
+      "v12": 0.079,
+      "v02": 0.087,
+      "v09": 0.057,
+      "v07": 0.078
+    }
+  },
+  "a07": {
+    "segmento": "cansado",
+    "transiciones": {
+      "v01": 0.07,
+      "v14": 0.065,
+      "v07": 0.073,
+      "v09": 0.077,
+      "v08": 0.086,
+      "v15": 0.09,
+      "v04": 0.093,
+      "v03": 0.069
+    }
+  },
+  "a08": {
+    "segmento": "curioso",
+    "transiciones": {
+      "v08": 0.068,
+      "v13": 0.075,
+      "v11": 0.098,
+      "v14": 0.079,
+      "v10": 0.087,
+      "v02": 0.091,
+      "v04": 0.079,
+      "v12": 0.062
+    }
+  },
+  "a09": {
+    "segmento": "blanco",
+    "transiciones": {
+      "v03": 0.086,
+      "v09": 0.078,
+      "v04": 0.081,
+      "v13": 0.065,
+      "v06": 0.072,
+      "v10": 0.088,
+      "v05": 0.099,
+      "v11": 0.056
+    }
+  },
+  "a10": {
+    "segmento": "amable",
+    "transiciones": {
+      "v13": 0.085,
+      "v02": 0.099,
+      "v12": 0.071,
+      "v09": 0.075,
+      "v04": 0.088,
+      "v15": 0.071,
+      "v05": 0.069,
+      "v07": 0.064
+    }
+  },
+  "a11": {
+    "segmento": "oscuro",
+    "transiciones": {
+      "v10": 0.07,
+      "v05": 0.082,
+      "v07": 0.086,
+      "v09": 0.078,
+      "v03": 0.091,
+      "v14": 0.065,
+      "v11": 0.06,
+      "v01": 0.077
+    }
+  },
+  "a12": {
+    "segmento": "joven",
+    "transiciones": {
+      "v07": 0.1,
+      "v05": 0.068,
+      "v06": 0.088,
+      "v12": 0.06,
+      "v08": 0.076,
+      "v11": 0.075,
+      "v04": 0.088,
+      "v09": 0.061
+    }
+  },
+  "v01": {
+    "segmento": "duerme",
+    "transiciones": {
+      "c10": 0.058,
+      "c06": 0.078,
+      "c07": 0.069,
+      "c04": 0.082,
+      "c05": 0.093,
+      "c02": 0.092,
+      "c09": 0.065,
+      "m020": 0.071
+    }
+  },
+  "v02": {
+    "segmento": "corre",
+    "transiciones": {
+      "c05": 0.068,
+      "c04": 0.099,
+      "c13": 0.076,
+      "c15": 0.088,
+      "c03": 0.065,
+      "c11": 0.078,
+      "c10": 0.087,
+      "m054": 0.072
+    }
+  },
+  "v03": {
+    "segmento": "estudia",
+    "transiciones": {
+      "c11": 0.062,
+      "c04": 0.074,
+      "c05": 0.094,
+      "c12": 0.078,
+      "c03": 0.057,
+      "c15": 0.073,
+      "c02": 0.082,
+      "c07": 0.093
+    }
+  },
+  "v04": {
+    "segmento": "canta",
+    "transiciones": {
+      "c04": 0.067,
+      "c11": 0.093,
+      "c15": 0.067,
+      "c01": 0.078,
+      "c03": 0.082,
+      "c09": 0.089,
+      "c08": 0.089,
+      "m020": 0.065
+    }
+  },
+  "v05": {
+    "segmento": "come",
+    "transiciones": {
+      "c12": 0.084,
+      "c08": 0.062,
+      "c04": 0.093,
+      "c11": 0.061,
+      "c06": 0.07,
+      "c15": 0.083,
+      "c10": 0.07,
+      "m054": 0.09
+    }
+  },
+  "v06": {
+    "segmento": "escribe",
+    "transiciones": {
+      "c08": 0.069,
+      "c09": 0.088,
+      "c04": 0.076,
+      "c13": 0.068,
+      "c06": 0.09,
+      "c14": 0.091,
+      "c05": 0.08,
+      "c07": 0.058
+    }
+  },
+  "v07": {
+    "segmento": "mira",
+    "transiciones": {
+      "c12": 0.087,
+      "c06": 0.086,
+      "c04": 0.073,
+      "c13": 0.065,
+      "c03": 0.079,
+      "c02": 0.099,
+      "c07": 0.073,
+      "c10": 0.063
+    }
+  },
+  "v08": {
+    "segmento": "viaja",
+    "transiciones": {
+      "c02": 0.074,
+      "c01": 0.092,
+      "c11": 0.064,
+      "c03": 0.078,
+      "c15": 0.094,
+      "c10": 0.089,
+      "c04": 0.067,
+      "c12": 0.072
+    }
+  },
+  "v09": {
+    "segmento": "juega",
+    "transiciones": {
+      "c11": 0.068,
+      "c05": 0.061,
+      "c01": 0.095,
+      "c12": 0.1,
+      "c08": 0.073,
+      "c06": 0.08,
+      "c15": 0.076,
+      "c03": 0.08
+    }
+  },
+  "v10": {
+    "segmento": "lee",
+    "transiciones": {
+      "c03": 0.075,
+      "c07": 0.057,
+      "c05": 0.065,
+      "c10": 0.076,
+      "c08": 0.073,
+      "c09": 0.09,
+      "c14": 0.085,
+      "m055": 0.083
+    }
+  },
+  "v11": {
+    "segmento": "salta",
+    "transiciones": {
+      "c05": 0.073,
+      "c04": 0.072,
+      "c08": 0.086,
+      "c06": 0.067,
+      "c14": 0.062,
+      "c11": 0.098,
+      "c07": 0.083,
+      "c02": 0.081
+    }
+  },
+  "v12": {
+    "segmento": "descansa",
+    "transiciones": {
+      "c06": 0.074,
+      "c10": 0.076,
+      "c15": 0.1,
+      "c02": 0.072,
+      "c11": 0.055,
+      "c05": 0.07,
+      "c03": 0.082,
+      "m007": 0.091
+    }
+  },
+  "v13": {
+    "segmento": "camina",
+    "transiciones": {
+      "c15": 0.087,
+      "c03": 0.07,
+      "c14": 0.083,
+      "c09": 0.063,
+      "c07": 0.06,
+      "c02": 0.093,
+      "c05": 0.079,
+      "m020": 0.096
+    }
+  },
+  "v14": {
+    "segmento": "baila",
+    "transiciones": {
+      "c15": 0.074,
+      "c11": 0.091,
+      "c14": 0.085,
+      "c01": 0.093,
+      "c08": 0.064,
+      "c07": 0.072,
+      "c03": 0.068,
+      "c04": 0.079
+    }
+  },
+  "v15": {
+    "segmento": "vuela",
+    "transiciones": {
+      "c07": 0.072,
+      "c01": 0.072,
+      "c11": 0.06,
+      "c05": 0.085,
+      "c09": 0.086,
+      "c15": 0.064,
+      "c03": 0.079,
+      "c12": 0.09
+    }
+  },
+  "c01": {
+    "segmento": "en el sofá"
+  },
+  "c02": {
+    "segmento": "por el parque"
+  },
+  "c03": {
+    "segmento": "con alegría",
+    "transiciones": {
+      "c08": 0.1,
+      "c04": 0.07
+    }
+  },
+  "c04": {
+    "segmento": "en la biblioteca"
+  },
+  "c05": {
+    "segmento": "sobre la mesa"
+  },
+  "c06": {
+    "segmento": "en la cama",
+    "transiciones": {
+      "c12": 0.07
+    }
+  },
+  "c07": {
+    "segmento": "por la calle",
+    "transiciones": {
+      "c14": 0.1,
+      "c06": 0.07
+    }
+  },
+  "c08": {
+    "segmento": "en el jardín"
+  },
+  "c09": {
+    "segmento": "bajo la luna"
+  },
+  "c10": {
+    "segmento": "en silencio"
+  },
+  "c11": {
+    "segmento": "cada mañana"
+  },
+  "c12": {
+    "segmento": "todo el día"
+  },
+  "c13": {
+    "segmento": "con sus amigos",
+    "transiciones": {
+      "s10": 0.1,
+      "c13": 0.07
+    }
+  },
+  "c14": {
+    "segmento": "por la ciudad",
+    "transiciones": {
+      "s11": 0.1,
+      "c02": 0.07
+    }
+  },
+  "c15": {
+    "segmento": "sin parar",
+    "transiciones": {
+      "s04": 0.1,
+      "c02": 0.07
+    }
+  },
+  "m001": {
+    "segmento": "con cuidado",
+    "transiciones": {
+      "c01": 0.1,
+      "c04": 0.075,
+      "c05": 0.05
+    }
+  },
+  "m002": {
+    "segmento": "con fuerza",
+    "transiciones": {
+      "c15": 0.1,
+      "c02": 0.075,
+      "c01": 0.05
+    }
+  },
+  "m003": {
+    "segmento": "con delicadeza",
+    "transiciones": {
+      "m006": 0.1,
+      "m055": 0.075,
+      "m034": 0.05
+    }
+  },
+  "m004": {
+    "segmento": "con entusiasmo",
+    "transiciones": {
+      "m041": 0.1,
+      "m020": 0.075,
+      "m005": 0.05
+    }
+  },
+  "m005": {
+    "segmento": "con desgana",
+    "transiciones": {
+      "s02": 0.1,
+      "s01": 0.075
+    }
+  },
+  "m006": {
+    "segmento": "con prisa",
+    "transiciones": {
+      "m007": 0.1,
+      "m018": 0.075,
+      "m042": 0.05
+    }
+  },
+  "m007": {
+    "segmento": "sin prisa",
+    "transiciones": {
+      "m026": 0.1,
+      "m055": 0.075,
+      "m012": 0.05
+    }
+  },
+  "m008": {
+    "segmento": "con esfuerzo",
+    "transiciones": {
+      "c09": 0.1,
+      "c06": 0.075,
+      "c12": 0.05
+    }
+  },
+  "m009": {
+    "segmento": "sin esfuerzo",
+    "transiciones": {
+      "s05": 0.075
+    }
+  },
+  "m010": {
+    "segmento": "con destreza",
+    "transiciones": {
+      "s08": 0.1,
+      "s02": 0.075
+    }
+  },
+  "m011": {
+    "segmento": "con torpeza",
+    "transiciones": {
+      "c06": 0.1,
+      "c07": 0.075,
+      "c05": 0.05
+    }
+  },
+  "m012": {
+    "segmento": "con miedo",
+    "transiciones": {
+      "c13": 0.1,
+      "c15": 0.075,
+      "c11": 0.05
+    }
+  },
+  "m013": {
+    "segmento": "con valor",
+    "transiciones": {
+      "s01": 0.1,
+      "s07": 0.075
+    }
+  },
+  "m014": {
+    "segmento": "con cobardía",
+    "transiciones": {
+      "m047": 0.1,
+      "m014": 0.075,
+      "m021": 0.05
+    }
+  },
+  "m015": {
+    "segmento": "con vergüenza",
+    "transiciones": {
+      "s03": 0.1,
+      "s12": 0.075
+    }
+  },
+  "m016": {
+    "segmento": "con descaro",
+    "transiciones": {
+      "m035": 0.1,
+      "m034": 0.075,
+      "m030": 0.05
+    }
+  },
+  "m017": {
+    "segmento": "con dulzura",
+    "transiciones": {
+      "c06": 0.1,
+      "c10": 0.075,
+      "c05": 0.05
+    }
+  },
+  "m018": {
+    "segmento": "con brusquedad",
+    "transiciones": {
+      "c06": 0.1,
+      "c11": 0.075,
+      "c08": 0.05
+    }
+  },
+  "m019": {
+    "segmento": "con ternura",
+    "transiciones": {
+      "m043": 0.1,
+      "m035": 0.075,
+      "m041": 0.05
+    }
+  },
+  "m020": {
+    "segmento": "con furia",
+    "transiciones": {
+      "c15": 0.1,
+      "c09": 0.075,
+      "c01": 0.05
+    }
+  },
+  "m021": {
+    "segmento": "con alegría",
+    "transiciones": {
+      "m051": 0.1,
+      "m027": 0.075,
+      "m028": 0.05
+    }
+  },
+  "m022": {
+    "segmento": "con tristeza",
+    "transiciones": {
+      "s05": 0.075
+    }
+  },
+  "m023": {
+    "segmento": "con nostalgia",
+    "transiciones": {
+      "m006": 0.1,
+      "m042": 0.075,
+      "m045": 0.05
+    }
+  },
+  "m024": {
+    "segmento": "con indiferencia",
+    "transiciones": {
+      "c10": 0.1,
+      "c09": 0.075,
+      "c05": 0.05
+    }
+  },
+  "m025": {
+    "segmento": "rápidamente",
+    "transiciones": {
+      "c05": 0.1,
+      "c02": 0.075,
+      "c10": 0.05
+    }
+  },
+  "m026": {
+    "segmento": "lentamente",
+    "transiciones": {
+      "m059": 0.1,
+      "m033": 0.075,
+      "m040": 0.05
+    }
+  },
+  "m027": {
+    "segmento": "despacio",
+    "transiciones": {
+      "m045": 0.1,
+      "m009": 0.075,
+      "m050": 0.05
+    }
+  },
+  "m028": {
+    "segmento": "en silencio",
+    "transiciones": {
+      "c14": 0.1,
+      "c04": 0.075,
+      "c02": 0.05
+    }
+  },
+  "m029": {
+    "segmento": "a voces",
+    "transiciones": {
+      "m016": 0.1,
+      "m029": 0.075,
+      "m048": 0.05
+    }
+  },
+  "m030": {
+    "segmento": "a toda prisa",
+    "transiciones": {
+      "c08": 0.1,
+      "c09": 0.075,
+      "c07": 0.05
+    }
+  },
+  "m031": {
+    "segmento": "sin mirar atrás",
+    "transiciones": {
+      "c11": 0.1,
+      "c07": 0.075,
+      "c03": 0.05
+    }
+  },
+  "m032": {
+    "segmento": "sin pensarlo",
+    "transiciones": {
+      "s10": 0.1,
+      "s08": 0.075
+    }
+  },
+  "m033": {
+    "segmento": "sin dudar",
+    "transiciones": {
+      "s06": 0.1,
+      "s04": 0.075
+    }
+  },
+  "m034": {
+    "segmento": "de buena gana",
+    "transiciones": {
+      "m019": 0.1,
+      "m014": 0.075,
+      "m057": 0.05
+    }
+  },
+  "m035": {
+    "segmento": "a regañadientes",
+    "transiciones": {
+      "c15": 0.1,
+      "c11": 0.075,
+      "c07": 0.05
+    }
+  },
+  "m036": {
+    "segmento": "a su aire",
+    "transiciones": {
+      "m011": 0.1,
+      "m009": 0.075,
+      "m043": 0.05
+    }
+  },
+  "m037": {
+    "segmento": "a su manera",
+    "transiciones": {
+      "c15": 0.1,
+      "c01": 0.075,
+      "c14": 0.05
+    }
+  },
+  "m038": {
+    "segmento": "con los ojos cerrados",
+    "transiciones": {
+      "m024": 0.1,
+      "m030": 0.075,
+      "m051": 0.05
+    }
+  },
+  "m039": {
+    "segmento": "con una sonrisa",
+    "transiciones": {
+      "s12": 0.075
+    }
+  },
+  "m040": {
+    "segmento": "con el ceño fruncido",
+    "transiciones": {
+      "s04": 0.1,
+      "s09": 0.075
+    }
+  },
+  "m041": {
+    "segmento": "tarareando",
+    "transiciones": {
+      "m053": 0.1,
+      "m047": 0.075,
+      "m011": 0.05
+    }
+  },
+  "m042": {
+    "segmento": "silbando",
+    "transiciones": {
+      "m015": 0.1,
+      "m010": 0.075,
+      "m008": 0.05
+    }
+  },
+  "m043": {
+    "segmento": "mascullando",
+    "transiciones": {
+      "c03": 0.1,
+      "c11": 0.05
+    }
+  },
+  "m044": {
+    "segmento": "suspirando",
+    "transiciones": {
+      "m042": 0.1,
+      "m014": 0.075,
+      "m021": 0.05
+    }
+  },
+  "m045": {
+    "segmento": "riendo",
+    "transiciones": {
+      "c14": 0.1,
+      "c13": 0.075,
+      "c12": 0.05
+    }
+  },
+  "m046": {
+    "segmento": "llorando",
+    "transiciones": {
+      "m026": 0.1,
+      "m010": 0.075,
+      "m056": 0.05
+    }
+  },
+  "m047": {
+    "segmento": "bostezando",
+    "transiciones": {
+      "m007": 0.1,
+      "m025": 0.075,
+      "m006": 0.05
+    }
+  },
+  "m048": {
+    "segmento": "tiritando",
+    "transiciones": {
+      "m012": 0.1,
+      "m048": 0.075,
+      "m005": 0.05
+    }
+  },
+  "m049": {
+    "segmento": "temblando",
+    "transiciones": {
+      "c03": 0.1,
+      "c05": 0.075,
+      "c12": 0.05
+    }
+  },
+  "m050": {
+    "segmento": "de repente",
+    "transiciones": {
+      "c05": 0.05
+    }
+  },
+  "m051": {
+    "segmento": "de pronto",
+    "transiciones": {
+      "m007": 0.1,
+      "m025": 0.075,
+      "m009": 0.05
+    }
+  },
+  "m052": {
+    "segmento": "de súbito",
+    "transiciones": {
+      "c13": 0.1,
+      "c12": 0.075,
+      "c03": 0.05
+    }
+  },
+  "m053": {
+    "segmento": "sin más",
+    "transiciones": {
+      "m014": 0.1,
+      "m028": 0.075,
+      "m012": 0.05
+    }
+  },
+  "m054": {
+    "segmento": "como si nada",
+    "transiciones": {
+      "c13": 0.1,
+      "c08": 0.075,
+      "c15": 0.05
+    }
+  },
+  "m055": {
+    "segmento": "como si fuera la primera vez",
+    "transiciones": {
+      "c09": 0.1,
+      "c10": 0.075,
+      "c11": 0.05
+    }
+  },
+  "m056": {
+    "segmento": "hasta el agotamiento",
+    "transiciones": {
+      "m023": 0.1,
+      "m005": 0.075,
+      "m009": 0.05
+    }
+  },
+  "m057": {
+    "segmento": "sin parar",
+    "transiciones": {
+      "m052": 0.1,
+      "m054": 0.075,
+      "m007": 0.05
+    }
+  },
+  "m058": {
+    "segmento": "sin descanso",
+    "transiciones": {
+      "c15": 0.1,
+      "c11": 0.075,
+      "c07": 0.05
+    }
+  },
+  "m059": {
+    "segmento": "sin aliento",
+    "transiciones": {
+      "m013": 0.1,
+      "m040": 0.075,
+      "m058": 0.05
+    }
+  },
+  "i001": {
+    "segmento": "Y entonces,",
+    "transiciones": {
+      "s06": 0.1,
+      "m017": 0.075,
+      "c02": 0.05
+    }
+  },
+  "i002": {
+    "segmento": "Y luego,"
+  },
+  "i003": {
+    "segmento": "Después,",
+    "transiciones": {
+      "m030": 0.1,
+      "m034": 0.075,
+      "m011": 0.05
+    }
+  },
+  "i004": {
+    "segmento": "Entonces,"
+  },
+  "i005": {
+    "segmento": "Luego,"
+  },
+  "i006": {
+    "segmento": "Y,",
+    "transiciones": {
+      "m059": 0.1,
+      "m025": 0.075,
+      "m038": 0.05
+    }
+  },
+  "i007": {
+    "segmento": "Pero,"
+  },
+  "i008": {
+    "segmento": "Aunque,",
+    "transiciones": {
+      "v04": 0.1,
+      "m009": 0.075,
+      "m043": 0.05
+    }
+  },
+  "i009": {
+    "segmento": "Porque,"
+  },
+  "i010": {
+    "segmento": "Pues,",
+    "transiciones": {
+      "c03": 0.1,
+      "a01": 0.075,
+      "m059": 0.05
+    }
+  },
+  "i011": {
+    "segmento": "Así que,"
+  },
+  "i012": {
+    "segmento": "De modo que,"
+  },
+  "i013": {
+    "segmento": "Mientras tanto,"
+  },
+  "i014": {
+    "segmento": "En cambio,"
+  },
+  "i015": {
+    "segmento": "Por eso,"
+  },
+  "i016": {
+    "segmento": "Resulta que,",
+    "transiciones": {
+      "m017": 0.1,
+      "v15": 0.075,
+      "s04": 0.05
+    }
+  },
+  "i017": {
+    "segmento": "Parece que,"
+  },
+  "i018": {
+    "segmento": "Dicen que,",
+    "transiciones": {
+      "m029": 0.1,
+      "c05": 0.075,
+      "v15": 0.05
+    }
+  },
+  "i019": {
+    "segmento": "Cuentan que,",
+    "transiciones": {
+      "m019": 0.1,
+      "s10": 0.075,
+      "m014": 0.05
+    }
+  },
+  "i020": {
+    "segmento": "He aquí que,",
+    "transiciones": {
+      "m046": 0.1,
+      "c13": 0.075,
+      "m025": 0.05
+    }
+  },
+  "i021": {
+    "segmento": "De pronto,"
+  },
+  "i022": {
+    "segmento": "De repente,"
+  },
+  "i023": {
+    "segmento": "A veces,",
+    "transiciones": {
+      "c05": 0.1,
+      "m008": 0.075,
+      "m057": 0.05
+    }
+  },
+  "i024": {
+    "segmento": "Muchas veces,",
+    "transiciones": {
+      "m026": 0.1,
+      "m058": 0.075,
+      "c12": 0.05
+    }
+  },
+  "i025": {
+    "segmento": "A menudo,"
+  },
+  "i026": {
+    "segmento": "Siempre,",
+    "transiciones": {
+      "m018": 0.1,
+      "m056": 0.075,
+      "m052": 0.05
+    }
+  },
+  "i027": {
+    "segmento": "Nunca,"
+  },
+  "i028": {
+    "segmento": "Hoy,",
+    "transiciones": {
+      "m050": 0.1,
+      "a02": 0.075,
+      "c10": 0.05
+    }
+  },
+  "i029": {
+    "segmento": "Ayer,"
+  },
+  "i030": {
+    "segmento": "Mañana,",
+    "transiciones": {
+      "v01": 0.1,
+      "a02": 0.075,
+      "m019": 0.05
+    }
+  },
+  "i031": {
+    "segmento": "Esta mañana,",
+    "transiciones": {
+      "s04": 0.05,
+      "a02": 0.075
+    }
+  },
+  "i032": {
+    "segmento": "Esta tarde,"
+  },
+  "i033": {
+    "segmento": "Esta noche,"
+  },
+  "i034": {
+    "segmento": "Cada día,"
+  },
+  "i035": {
+    "segmento": "A diario,"
+  },
+  "i036": {
+    "segmento": "De vez en cuando,",
+    "transiciones": {
+      "m038": 0.1,
+      "m023": 0.075,
+      "a10": 0.05
+    }
+  },
+  "i037": {
+    "segmento": "Otra vez,"
+  },
+  "i038": {
+    "segmento": "Una vez más,"
+  }
+}

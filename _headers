@@ -1,0 +1,18 @@
+# Cache-Control: HTML siempre fresco (deploys se ven al instante)
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+
+# Core JS: 1 día, revalida después
+/lib/*.js
+  Cache-Control: public, max-age=86400, must-revalidate
+
+# Datasets: 5 min, revalida después (así podés editar surreal.json y ver el cambio)
+/data/*.json
+  Cache-Control: public, max-age=300, must-revalidate
+
+# CLI .js en root: no los usa la web, pero por las dudas que no se indexen
+/markov.js
+/walk.js
+/song.js
+  X-Robots-Tag: noindex

@@ -1,0 +1,30 @@
+# Auto-generated cache (CLIs)
+data/songs/
+
+# Dependencies (defensivo, no hay package.json aún)
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Wrangler / Cloudflare
+.wrangler/
+.dev.vars
+
+# Backups locales del dataset
+*.bak
+*.backup
+*.tmp

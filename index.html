@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="es" x-data="markovUI()" x-init="init()" :class="dark ? 'dark' : 'light'">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markov — Generador de frases, walks y canciones</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cascadia-code@1.0.0/css/cascadia-code.css">
+  <style>
+    :root {
+      --bg: #f3f3f3;
+      --bg-2: #ffffff;
+      --bg-3: #e8e8e8;
+      --titlebar: #dddddd;
+      --sidebar: #fafafa;
+      --border: #d4d4d4;
+      --text: #1f1f1f;
+      --text-dim: #6b6b6b;
+      --accent: #007acc;
+      --accent-2: #e94560;
+      --warn-bg: #fff4ce;
+      --warn-fg: #6b5900;
+      --err-bg: #fde7e9;
+      --err-fg: #a1260d;
+      --ok-bg: #d6f5d6;
+      --ok-fg: #1a7a1a;
+      --tag-bg: #d0e8ff;
+      --tag-fg: #003e7e;
+      --chip-bg: #e1e1e1;
+      --chip-fg: #333;
+      --dataset-1: #007acc;
+      --dataset-2: #e94560;
+      --dataset-3: #b86e00;
+    }
+    html.dark {
+      --bg: #1e1e1e;
+      --bg-2: #252526;
+      --bg-3: #2d2d30;
+      --titlebar: #3c3c3c;
+      --sidebar: #252526;
+      --border: #3c3c3c;
+      --text: #d4d4d4;
+      --text-dim: #858585;
+      --accent: #4ec9b0;
+      --accent-2: #f48771;
+      --warn-bg: #4a3c00;
+      --warn-fg: #ffd866;
+      --err-bg: #5a1d1d;
+      --err-fg: #f48771;
+      --ok-bg: #1e4a1e;
+      --ok-fg: #b5cea8;
+      --tag-bg: #094771;
+      --tag-fg: #9cdcfe;
+      --chip-bg: #3c3c3c;
+      --chip-fg: #d4d4d4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Cascadia Code', 'Cascadia Mono', Consolas, 'Courier New', monospace;
+      font-size: 13px;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+    }
+    .titlebar {
+      height: 32px;
+      background: var(--titlebar);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-size: 12px;
+      color: var(--text-dim);
+      gap: 12px;
+    }
+    .titlebar .title { flex: 1; font-weight: 600; color: var(--text); }
+    .titlebar button {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 2px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    .titlebar button:hover { background: var(--bg-3); }
+    .layout {
+      display: flex;
+      height: calc(100vh - 32px);
+    }
+    .sidebar {
+      width: 360px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .editor {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-2);
+      border-left: 3px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .editor.dataset-1 { border-left-color: var(--dataset-1); }
+    .editor.dataset-2 { border-left-color: var(--dataset-2); }
+    .editor.dataset-3 { border-left-color: var(--dataset-3); }
+    .section {
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+    }
+    .section h3 {
+      margin: 0 0 8px 0;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+    .tabs {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .tab {
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      border-bottom: 2px solid transparent;
+      font-family: inherit;
+    }
+    .tab.active {
+      color: var(--text);
+      border-bottom-color: var(--accent);
+    }
+    .tab:hover { color: var(--text); }
+    .field { margin-bottom: 8px; }
+    .field label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 3px;
+    }
+    .field input[type=text],
+    .field input[type=number],
+    .field select,
+    .field input[type=file] {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 6px;
+      font-family: inherit;
+      font-size: 12px;
+      border-radius: 2px;
+    }
+    .field input[type=file] { padding: 2px; }
+    .row { display: flex; gap: 6px; align-items: center; }
+    .row > * { flex: 1; }
+    .row .check { flex: 0 0 auto; }
+    .btn {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 6px 12px;
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 2px;
+      width: 100%;
+      font-weight: 600;
+    }
+    .btn:hover { filter: brightness(1.1); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-secondary {
+      background: var(--bg-3);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-row { display: flex; gap: 6px; margin-top: 8px; }
+    .btn-row .btn { flex: 1; }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 4px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      min-height: 28px;
+    }
+    .chip {
+      background: var(--chip-bg);
+      color: var(--chip-fg);
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .chip button {
+      background: transparent;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      padding: 0 2px;
+      font-size: 13px;
+      line-height: 1;
+    }
+    .chip-input {
+      flex: 1;
+      min-width: 80px;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 12px;
+      padding: 2px;
+      outline: none;
+    }
+    .radio-group {
+      display: flex;
+      gap: 10px;
+      font-size: 12px;
+    }
+    .radio-group label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    .warnings {
+      background: var(--warn-bg);
+      color: var(--warn-fg);
+      padding: 6px 10px;
+      font-size: 11px;
+      border-bottom: 1px solid var(--border);
+    }
+    .warnings div { margin: 2px 0; }
+    .error {
+      background: var(--err-bg);
+      color: var(--err-fg);
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+    .statusbar {
+      background: var(--titlebar);
+      border-top: 1px solid var(--border);
+      padding: 4px 10px;
+      font-size: 11px;
+      color: var(--text-dim);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .statusbar .badge {
+      background: var(--bg-3);
+      padding: 1px 6px;
+      border-radius: 2px;
+    }
+    .editor-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 18px;
+      line-height: 1.6;
+      font-size: 13px;
+    }
+    .editor-body pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: inherit;
+    }
+    .editor-body .empty {
+      color: var(--text-dim);
+      font-style: italic;
+    }
+    .song-block {
+      margin-bottom: 18px;
+      border-left: 2px solid var(--accent);
+      padding-left: 10px;
+    }
+    .song-tag {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 12px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .song-tag button {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 11px;
+    }
+    .song-tag button:hover { color: var(--accent); }
+    .dataset-meta {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+    .dataset-meta .pill {
+      display: inline-block;
+      background: var(--bg-3);
+      padding: 1px 5px;
+      border-radius: 8px;
+      margin-right: 4px;
+    }
+    .history-item {
+      padding: 4px 6px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      margin-bottom: 4px;
+      cursor: pointer;
+      font-size: 11px;
+    }
+    .history-item:hover { background: var(--bg-3); }
+    .history-item .ts { color: var(--text-dim); font-size: 10px; }
+    .history-item .preview { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .inspector-table {
+      width: 100%;
+      font-size: 11px;
+      border-collapse: collapse;
+    }
+    .inspector-table td {
+      padding: 2px 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .inspector-table td:last-child { text-align: right; }
+    .inspector-list {
+      max-height: 180px;
+      overflow-y: auto;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 4px;
+      font-size: 11px;
+    }
+    .inspector-list-item {
+      padding: 2px 4px;
+      cursor: pointer;
+    }
+    .inspector-list-item:hover { background: var(--bg-3); }
+    kbd {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      padding: 0 4px;
+      border-radius: 2px;
+      font-size: 10px;
+      font-family: inherit;
+    }
+    .help {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+    .section-meta {
+      display: flex;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header class="titlebar">
+    <span class="title">● Markov Generator</span>
+    <span x-text="'Dataset: ' + (datasetName || '—')"></span>
+    <span x-text="'Modo: ' + modo"></span>
+    <button @click="toggleTheme()" x-text="dark ? '☀ Light' : '🌙 Dark'"></button>
+    <button @click="limpiar()" title="Limpiar output (Ctrl+L)">Limpiar</button>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+
+      <!-- Dataset -->
+      <div class="section">
+        <h3>Dataset</h3>
+        <div class="field">
+          <input type="text" list="datasets" x-model="datasetPath"
+                 @change="loadDataset()" placeholder="data/surreal.json">
+          <datalist id="datasets">
+            <option value="data/data.json">
+            <option value="data/surreal.json">
+          </datalist>
+        </div>
+        <div class="field">
+          <input type="file" accept=".json" @change="loadDatasetFile($event)">
+        </div>
+        <template x-if="datasetMeta">
+          <div class="dataset-meta">
+            <span class="pill" x-text="datasetMeta.nodos + ' nodos'"></span>
+            <template x-for="(c, t) in datasetMeta.tipos" :key="t">
+              <span class="pill" x-text="t + ':' + c"></span>
+            </template>
+          </div>
+        </template>
+        <div class="help" x-show="error" x-text="error" style="color: var(--err-fg);"></div>
+        <div class="help">
+          Si abrís con <code>file://</code> el fetch falla. Serví con
+          <code>npx serve .</code> o <code>python -m http.server</code>.
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="section">
+        <div class="tabs">
+          <button class="tab" :class="{ active: modo==='frases' }" @click="modo='frases'">Frases</button>
+          <button class="tab" :class="{ active: modo==='walk' }" @click="modo='walk'">Walk</button>
+          <button class="tab" :class="{ active: modo==='cancion' }" @click="modo='cancion'">Canción</button>
+          <button class="tab" :class="{ active: modo==='dataset' }" @click="modo='dataset'">Dataset</button>
+        </div>
+
+        <!-- Frases -->
+        <div x-show="modo==='frases'">
+          <div class="field">
+            <label>Cantidad</label>
+            <input type="number" min="1" x-model.number="cfg.frases.count">
+          </div>
+          <div class="field">
+            <label>Grupo (separador cada N)</label>
+            <input type="number" min="1" x-model.number="cfg.frases.groupSize">
+          </div>
+          <button class="btn" @click="generarFrases()" :disabled="loading || !datasetLoaded">
+            ▶ Generar frases
+          </button>
+        </div>
+
+        <!-- Walk -->
+        <div x-show="modo==='walk'">
+          <div class="field">
+            <label>Pasos (saltos del grafo)</label>
+            <input type="number" min="1" x-model.number="cfg.walk.steps">
+          </div>
+          <div class="field">
+            <label>Caminatas (walks distintos)</label>
+            <input type="number" min="1" x-model.number="cfg.walk.count">
+          </div>
+          <div class="field">
+            <label>Grupo (línea en blanco cada N)</label>
+            <input type="number" min="1" x-model.number="cfg.walk.groupSize">
+          </div>
+          <button class="btn" @click="generarWalk()" :disabled="loading || !datasetLoaded">
+            ▶ Generar walks
+          </button>
+        </div>
+
+        <!-- Canción -->
+        <div x-show="modo==='cancion'">
+          <div class="field">
+            <label>Estructura (chips, enter para agregar)</label>
+            <div class="chips">
+              <template x-for="(t, i) in cfg.cancion.structure" :key="i">
+                <span class="chip">
+                  <span x-text="t"></span>
+                  <button @click="removeChip(i)">×</button>
+                </span>
+              </template>
+              <input class="chip-input" x-model="chipInput"
+                     @keydown.enter.prevent="addChip()"
+                     @keydown.,.prevent="addChip()"
+                     @blur="addChip()"
+                     placeholder="verse, chorus, bridge…">
+            </div>
+          </div>
+          <div class="field">
+            <label>Nombre (vacío = aleatorio)</label>
+            <input type="text" x-model="cfg.cancion.name" :disabled="cfg.cancion.randomName"
+                   placeholder="mi_tema">
+          </div>
+          <div class="field row">
+            <label class="check">
+              <input type="checkbox" x-model="cfg.cancion.randomName">
+              Aleatorio
+            </label>
+          </div>
+          <div class="field">
+            <label>Formato</label>
+            <div class="radio-group">
+              <label><input type="radio" x-model="cfg.cancion.format" value="text"> Texto</label>
+              <label><input type="radio" x-model="cfg.cancion.format" value="json"> JSON</label>
+              <label><input type="radio" x-model="cfg.cancion.format" value="plain"> Plain</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Overrides (ej: <code>verse=40,chorus=20</code>)</label>
+            <input type="text" x-model="cfg.cancion.overrides" placeholder="verse=40,chorus=20">
+          </div>
+          <div class="field row">
+            <label class="check">
+              <input type="checkbox" x-model="cfg.cancion.regen">
+              Regenerar ignorando cache
+            </label>
+          </div>
+          <div class="field">
+            <input type="file" accept=".json" @change="loadSongFile($event)">
+            <div class="help">Cargar <code>data/songs/*.json</code> generado por la CLI</div>
+          </div>
+          <button class="btn" @click="generarCancion()" :disabled="loading || !datasetLoaded">
+            ▶ Generar canción
+          </button>
+          <div class="btn-row" x-show="cancionObj">
+            <button class="btn btn-secondary" @click="copiarCancion()"
+                    x-text="copyStatus === 'ok' ? '✓ Copiado' : (copyStatus === 'err' ? '✗ Error' : (copyStatus === 'vacío' ? '(vacío)' : '⧉ Copiar'))"></button>
+            <button class="btn btn-secondary" @click="descargarCancion()">⬇ Descargar</button>
+            <button class="btn btn-secondary" @click="abrirCancionJson()">↗ JSON</button>
+          </div>
+        </div>
+
+        <!-- Dataset inspector -->
+        <div x-show="modo==='dataset'">
+          <template x-if="datasetMeta">
+            <div>
+              <div class="field">
+                <label>Conteo por tipo</label>
+                <table class="inspector-table">
+                  <template x-for="(c, t) in datasetMeta.tipos" :key="t">
+                    <tr><td x-text="tipoLabel(t)"></td><td x-text="c"></td></tr>
+                  </template>
+                </table>
+              </div>
+              <div class="field">
+                <label>Terminales (sin transiciones): <span x-text="datasetMeta.terminales.length"></span></label>
+                <div class="inspector-list">
+                  <template x-for="t in datasetMeta.terminales.slice(0, 80)" :key="t.id">
+                    <div class="inspector-list-item" x-text="t.id + ' — ' + t.seg"></div>
+                  </template>
+                </div>
+              </div>
+              <div class="field">
+                <label>Buscar nodo</label>
+                <input type="text" x-model="searchNode" placeholder="id o texto">
+                <div class="inspector-list" x-show="searchNode">
+                  <template x-for="r in searchResults().slice(0, 40)" :key="r.id">
+                    <div class="inspector-list-item" x-text="r.id + ' — ' + r.seg"></div>
+                  </template>
+                </div>
+              </div>
+              <button class="btn btn-secondary" @click="probarMotor()">⚙ Probar motor (100 walks)</button>
+              <div class="help" x-show="motorTest" x-text="motorTest"></div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- Warnings -->
+      <template x-if="warnings && warnings.length > 0">
+        <div class="warnings">
+          <template x-for="w in warnings" :key="w">
+            <div>⚠ <span x-text="w"></span></div>
+          </template>
+        </div>
+      </template>
+
+      <!-- Historial -->
+      <div class="section">
+        <h3>
+          Historial
+          <button @click="clearHistory()" style="float:right; background:transparent; border:none; color:var(--text-dim); cursor:pointer; font-size:10px;">limpiar</button>
+        </h3>
+        <template x-if="history.length === 0">
+          <div class="help">Sin generaciones aún</div>
+        </template>
+        <template x-for="(h, i) in history" :key="h.ts + i">
+          <div class="history-item" @click="restoreHistory(i)">
+            <div class="ts" x-text="h.ts + ' · ' + h.modo"></div>
+            <div class="preview" x-text="h.preview"></div>
+          </div>
+        </template>
+      </div>
+
+      <!-- Atajos -->
+      <div class="section">
+        <h3>Atajos</h3>
+        <div class="help">
+          <kbd>Ctrl+Enter</kbd> ejecutar · <kbd>Ctrl+L</kbd> limpiar · <kbd>Ctrl+D</kbd> tema · <kbd>Ctrl+Shift+T</kbd> probar motor
+        </div>
+      </div>
+
+    </aside>
+
+    <main class="editor" :class="datasetColorClass()">
+      <div class="statusbar">
+        <span class="badge" x-text="'archivo: ' + (datasetName || '—')"></span>
+        <span class="badge" x-text="'modo: ' + modo"></span>
+        <template x-if="outputMeta">
+          <span style="display:contents">
+            <span class="badge" x-text="'oraciones: ' + (outputMeta.oraciones || 0)"></span>
+            <span class="badge" x-show="outputMeta.pasos" x-text="'pasos: ' + outputMeta.pasos"></span>
+            <span class="badge" x-show="outputMeta.sujetos" x-text="'sujetos: ' + outputMeta.sujetos"></span>
+            <span class="badge" x-show="outputMeta.terminales" x-text="'terminales: ' + outputMeta.terminales"></span>
+            <span class="badge" x-show="outputMeta.tipos" x-text="'tipos: ' + Object.entries(outputMeta.tipos).map(([k,v])=>k+':'+v).join(' ')"></span>
+          </span>
+        </template>
+      </div>
+      <div class="editor-body" id="output">
+        <template x-if="!output">
+          <div class="empty">Sin output todavía. Elegí un dataset y un modo, y dale al botón ▶.</div>
+        </template>
+        <template x-if="output && modo==='cancion' && cfg.cancion.format === 'text'">
+          <div>
+            <template x-for="(tag, i) in cancionEstructura" :key="i">
+              <div class="song-block">
+                <div class="song-tag">
+                  [<span x-text="tag"></span>]
+                  <button @click="copyTag(i)">copy</button>
+                </div>
+                <pre x-text="(cancionObj && cancionObj.secciones[tag] || []).join('\n') || '(sin oraciones)'"></pre>
+              </div>
+            </template>
+          </div>
+        </template>
+        <template x-if="output && (modo !== 'cancion' || cfg.cancion.format !== 'text')">
+          <pre x-text="output"></pre>
+        </template>
+      </div>
+    </main>
+  </div>
+
+  <script src="lib/markov-core.js"></script>
+  <script>
+    // Lógica de canción en el browser, espejada de song.js (CLI).
+    // El browser no tiene acceso a data/songs/ en disco, así que siempre
+    // regenera. El "cache" sólo se materializa si el usuario descarga el JSON.
+    var DEFAULT_STRUCTURE = ['verse','verse','chorus','verse','verse','chorus','bridge','chorus'];
+    var ORACIONES_POR_TAG = { verse: 6, chorus: 4, bridge: 4, intro: 3, outro: 3, prechorus: 4, hook: 3 };
+    var DEFAULT_ORACIONES = 4;
+    var PASOS_POR_ORACION = 5;
+    var MIN_STEPS = 12;
+
+    function finalizar(s) {
+      s = (s || '').trim();
+      if (!s) return '';
+      var last = s.charAt(s.length - 1);
+      if (last === '.' || last === ',' || last === ';' || last === '!' || last === '?' || last === ':') return s;
+      return s + '.';
+    }
+    function oracionesPara(tag, overrides) {
+      if (overrides && overrides[tag] != null) return Math.max(1, overrides[tag]);
+      return ORACIONES_POR_TAG[tag] || DEFAULT_ORACIONES;
+    }
+    function totalSteps(estructura, overrides) {
+      var seen = {}, total = 0;
+      estructura.forEach(function (t) {
+        if (seen[t]) return;
+        seen[t] = true;
+        total += oracionesPara(t, overrides) * PASOS_POR_ORACION;
+      });
+      return Math.max(MIN_STEPS, total);
+    }
+    function repartir(estructura, sentences, overrides) {
+      var needed = {};
+      estructura.forEach(function (t) {
+        if (needed[t] == null) needed[t] = oracionesPara(t, overrides);
+      });
+      var pool = sentences.map(finalizar).filter(Boolean).slice();
+      var secciones = {}, cursor = 0;
+      Object.keys(needed).forEach(function (t) {
+        var take = Math.min(needed[t], Math.max(0, pool.length - cursor));
+        secciones[t] = pool.slice(cursor, cursor + take);
+        cursor += take;
+      });
+      return secciones;
+    }
+    function randomSongId() {
+      var ts = new Date().toISOString().replace(/[-:T.Z]/g, '').slice(0, 14);
+      var rnd = Math.random().toString(36).slice(2, 7);
+      return 'song_' + ts + '_' + rnd;
+    }
+    function parseOverrides(str) {
+      if (!str || !str.trim()) return null;
+      var map = {};
+      str.split(',').forEach(function (pair) {
+        var kv = pair.split('=');
+        if (kv.length === 2) {
+          var n = parseInt(kv[1], 10);
+          if (!isNaN(n)) map[kv[0].trim()] = n;
+        }
+      });
+      return Object.keys(map).length ? map : null;
+    }
+
+    function markovUI() {
+      return {
+        // Estado
+        datasetPath: 'data/surreal.json',
+        datasetLoaded: null,
+        datasetMeta: null,
+        datasetName: '',
+        modo: 'frases',
+        cfg: {
+          frases:  { count: 10, groupSize: 4 },
+          walk:    { steps: 30, count: 5, groupSize: 3 },
+          cancion: { structure: DEFAULT_STRUCTURE.slice(), name: '', randomName: true, regen: true, format: 'text', overrides: '' }
+        },
+        chipInput: '',
+        output: '',
+        outputMeta: null,
+        cancionObj: null,
+        cancionEstructura: [],
+        warnings: [],
+        error: null,
+        loading: false,
+        dark: true,
+        copyStatus: '',
+        history: [],
+        searchNode: '',
+        motorTest: '',
+
+        async init() {
+          this.dark = (localStorage.getItem('markov_dark') ?? '1') === '1';
+          try {
+            var raw = localStorage.getItem('markov_history');
+            this.history = raw ? JSON.parse(raw) : [];
+          } catch (e) { this.history = []; }
+
+          // Intentar cargar surreal por defecto; fallback a data.
+          if (await this.tryFetch('data/surreal.json')) return;
+          if (await this.tryFetch('data/data.json')) return;
+          this.error = 'No se pudo cargar ningún dataset por defecto. Usá "examinar…" o serví los archivos con un servidor estático.';
+        },
+
+        async tryFetch(path) {
+          try {
+            var r = await fetch(path);
+            if (!r.ok) return false;
+            var data = await r.json();
+            this.datasetPath = path;
+            this.datasetName = path.split('/').pop();
+            this.datasetLoaded = data;
+            this.updateMeta();
+            return true;
+          } catch (e) { return false; }
+        },
+
+        async loadDataset() {
+          this.error = null;
+          if (await this.tryFetch(this.datasetPath)) return;
+          this.error = 'No se pudo cargar "' + this.datasetPath + '". Si abrís con file://, serví con un servidor estático.';
+          this.datasetLoaded = null;
+          this.datasetMeta = null;
+        },
+
+        loadDatasetFile(ev) {
+          var file = ev.target.files[0];
+          if (!file) return;
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            try {
+              this.datasetLoaded = JSON.parse(e.target.result);
+              this.datasetName = file.name;
+              this.datasetPath = file.name;
+              this.updateMeta();
+              this.error = null;
+            } catch (err) {
+              this.error = 'JSON inválido: ' + err.message;
+            }
+          }.bind(this);
+          reader.readAsText(file);
+        },
+
+        loadSongFile(ev) {
+          var file = ev.target.files[0];
+          if (!file) return;
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            try {
+              var song = JSON.parse(e.target.result);
+              this.cancionObj = song;
+              this.cancionEstructura = song.estructura || [];
+              this.cfg.cancion.name = song.nombre || '';
+              this.cfg.cancion.randomName = false;
+              this.output = JSON.stringify(song, null, 2);
+              this.outputMeta = { oraciones: song.oraciones, pasos: song.pasos };
+              this.pushHistory('cancion (cargada)');
+            } catch (err) {
+              this.error = 'JSON inválido: ' + err.message;
+            }
+          }.bind(this);
+          reader.readAsText(file);
+        },
+
+        updateMeta() {
+          if (!this.datasetLoaded) { this.datasetMeta = null; return; }
+          var gen = new MarkovGenerator(this.datasetLoaded);
+          var a = gen.analyze();
+          this.datasetMeta = {
+            nodos: this.datasetLoaded ? Object.keys(this.datasetLoaded).length : 0,
+            tipos: a.counts,
+            terminales: a.terminals,
+            adjetivosSinGenero: a.adjetivosSinGenero
+          };
+          this.computeWarnings();
+        },
+
+        computeWarnings() {
+          this.warnings = [];
+          if (!this.datasetMeta) return;
+          if (this.datasetMeta.adjetivosSinGenero && this.datasetMeta.adjetivosSinGenero.length > 0) {
+            this.warnings.push('Hay ' + this.datasetMeta.adjetivosSinGenero.length + ' adjetivos con segmento string (sin {M,F}). Vas a ver inconsistencias de género.');
+          }
+          var total = this.datasetMeta.nodos;
+          var termRatio = this.datasetMeta.terminales.length / total;
+          if (this.datasetMeta.terminales.length > 0 && termRatio > 0.80) {
+            this.warnings.push('El ' + Math.round(termRatio * 100) + '% de los nodos son terminales duros. Las frases van a sentirse cortadas.');
+          }
+        },
+
+        datasetColorClass() {
+          if (this.datasetName === 'data.json') return 'dataset-1';
+          if (this.datasetName === 'surreal.json') return 'dataset-2';
+          return 'dataset-3';
+        },
+
+        tipoLabel(t) {
+          return { s: 's sujeto', a: 'a adjetivo', v: 'v verbo', m: 'm modo', p: 'p puente', c: 'c complemento', i: 'i interjección' }[t] || t;
+        },
+
+        searchResults() {
+          if (!this.searchNode || !this.datasetLoaded) return [];
+          var q = this.searchNode.toLowerCase();
+          var out = [];
+          var data = this.datasetLoaded;
+          var gen = new MarkovGenerator(data);
+          for (var id in data) {
+            if (out.length > 60) break;
+            if (id.toLowerCase().indexOf(q) !== -1) {
+              out.push({ id: id, seg: gen._renderSegmento(data[id], 'M') });
+              continue;
+            }
+            var n = data[id];
+            var seg = typeof n.segmento === 'string' ? n.segmento : (n.segmento.M || n.segmento.F || '');
+            if (seg && seg.toLowerCase().indexOf(q) !== -1) {
+              out.push({ id: id, seg: seg });
+            }
+          }
+          return out;
+        },
+
+        probarMotor() {
+          if (!this.datasetLoaded) return;
+          var gen = new MarkovGenerator(this.datasetLoaded);
+          var agg = { s: 0, a: 0, v: 0, m: 0, p: 0, c: 0, i: 0 };
+          var totalSent = 0;
+          for (var i = 0; i < 100; i++) {
+            var w = gen.walk(12);
+            totalSent += w.sentences.length;
+            Object.keys(agg).forEach(function (k) { agg[k] += (w.tipos[k] || 0); });
+          }
+          this.motorTest = '100 walks · ' + totalSent + ' oraciones · ' + Object.entries(agg).map(function (kv) { return kv[0] + ':' + kv[1]; }).join(' ');
+        },
+
+        generarFrases() {
+          if (!this.datasetLoaded) return;
+          this.loading = true;
+          try {
+            var gen = new MarkovGenerator(this.datasetLoaded);
+            var count = Math.max(1, this.cfg.frases.count | 0);
+            var group = Math.max(1, this.cfg.frases.groupSize | 0);
+            var frases = gen.generateMultiple(count);
+            this.output = frases.map(function (f, i) {
+              var sep = (i + 1) % group === 0 && i < frases.length - 1 ? '\n\n' : '\n';
+              return f + (i < frases.length - 1 ? sep : '');
+            }).join('').replace(/\n+$/, '');
+            this.outputMeta = { oraciones: frases.length };
+            this.pushHistory('frases');
+          } finally { this.loading = false; }
+        },
+
+        generarWalk() {
+          if (!this.datasetLoaded) return;
+          this.loading = true;
+          try {
+            var gen = new MarkovGenerator(this.datasetLoaded);
+            var steps = Math.max(1, this.cfg.walk.steps | 0);
+            var count = Math.max(1, this.cfg.walk.count | 0);
+            var group = Math.max(1, this.cfg.walk.groupSize | 0);
+            var bloques = [];
+            var agg = { s: 0, a: 0, v: 0, m: 0, p: 0, c: 0, i: 0 };
+            var totSent = 0, totSujetos = 0, totTerm = 0, totPasos = 0;
+            for (var i = 0; i < count; i++) {
+              var w = gen.walk(steps);
+              totSent += w.sentences.length;
+              totSujetos += w.sujetos;
+              totTerm += w.terminales;
+              totPasos += w.pasos;
+              Object.keys(agg).forEach(function (k) { agg[k] += (w.tipos[k] || 0); });
+              w.sentences.forEach(function (s, j) {
+                bloques.push(finalizar(s));
+                if ((j + 1) % group === 0) bloques.push('');
+              });
+              if (i < count - 1) bloques.push('');
+            }
+            this.output = bloques.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+            this.outputMeta = {
+              oraciones: totSent,
+              pasos: totPasos,
+              sujetos: totSujetos,
+              terminales: totTerm,
+              tipos: agg
+            };
+            this.pushHistory('walk');
+          } finally { this.loading = false; }
+        },
+
+        generarCancion() {
+          if (!this.datasetLoaded) return;
+          this.loading = true;
+          try {
+            var struct = this.cfg.cancion.structure.slice();
+            if (struct.length === 0) { this.error = 'Estructura vacía'; return; }
+            var name = this.cfg.cancion.randomName ? randomSongId() : (this.cfg.cancion.name || randomSongId());
+            var overrides = parseOverrides(this.cfg.cancion.overrides);
+            var steps = totalSteps(struct, overrides);
+            var gen = new MarkovGenerator(this.datasetLoaded);
+            var w = gen.walk(steps);
+            var secciones = repartir(struct, w.sentences, overrides);
+            var song = {
+              nombre: name,
+              archivo: this.datasetName,
+              estructura: struct,
+              pasos: steps,
+              oraciones: w.sentences.length,
+              secciones: secciones
+            };
+            this.cancionObj = song;
+            this.cancionEstructura = struct;
+            this.cfg.cancion.name = name;
+            this.cfg.cancion.randomName = false;
+            this.outputMeta = { oraciones: song.oraciones, pasos: song.pasos };
+            this.output = this.renderCancion(song);
+            this.pushHistory('cancion');
+          } finally { this.loading = false; }
+        },
+
+        renderCancion(song) {
+          if (this.cfg.cancion.format === 'json') return JSON.stringify(song, null, 2);
+          if (this.cfg.cancion.format === 'plain') {
+            return song.estructura.map(function (t) { return (song.secciones[t] || []).join(' '); }).filter(Boolean).join('\n\n');
+          }
+          // text: lo renderiza el template, pero dejamos un fallback en output
+          return song.estructura.map(function (t) {
+            return '[' + t + ']\n' + (song.secciones[t] || []).join('\n');
+          }).join('\n\n');
+        },
+
+        downloadBlob(name, content, mime) {
+          var blob = new Blob([content], { type: mime || 'application/octet-stream' });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url; a.download = name;
+          document.body.appendChild(a); a.click();
+          document.body.removeChild(a);
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        },
+
+        descargarCancion() {
+          if (!this.cancionObj) return;
+          this.downloadBlob('data/songs/' + this.cancionObj.nombre + '.json',
+                            JSON.stringify(this.cancionObj, null, 2),
+                            'application/json');
+        },
+
+        copyToClipboard(text) {
+          // Intento 1: Clipboard API (requiere contexto seguro: https o localhost)
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            try {
+              navigator.clipboard.writeText(text);
+              return true;
+            } catch (e) { /* cae al fallback */ }
+          }
+          // Fallback: textarea + execCommand. Funciona en file:// y contextos
+          // inseguros. Limitación: el foco visible puede saltar brevemente.
+          try {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.top = '-9999px';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            var ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            return ok;
+          } catch (e) { return false; }
+        },
+
+        copiarCancion() {
+          if (!this.output) { this.copyStatus = 'vacío'; }
+          else {
+            var ok = this.copyToClipboard(this.output);
+            this.copyStatus = ok ? 'ok' : 'err';
+          }
+          setTimeout(function () { this.copyStatus = ''; }.bind(this), 1800);
+        },
+
+        abrirCancionJson() {
+          if (!this.cancionObj) return;
+          var w = window.open('', '_blank');
+          w.document.write('<pre style="font-family:monospace; padding:20px;">' +
+                           JSON.stringify(this.cancionObj, null, 2)
+                             .replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</pre>');
+        },
+
+        copyTag(i) {
+          var tag = this.cancionEstructura[i];
+          var txt = (this.cancionObj.secciones[tag] || []).join('\n');
+          navigator.clipboard.writeText('[' + tag + ']\n' + txt);
+        },
+
+        copiar() {
+          if (!this.output) return;
+          navigator.clipboard.writeText(this.output);
+        },
+
+        limpiar() {
+          this.output = '';
+          this.outputMeta = null;
+          this.cancionObj = null;
+          this.cancionEstructura = [];
+        },
+
+        toggleTheme() {
+          this.dark = !this.dark;
+          localStorage.setItem('markov_dark', this.dark ? '1' : '0');
+        },
+
+        addChip() {
+          var v = (this.chipInput || '').trim();
+          if (!v) return;
+          // Permitir pegar varios separados por coma
+          v.split(',').map(function (s) { return s.trim(); }).filter(Boolean).forEach(function (tag) {
+            this.cfg.cancion.structure.push(tag);
+          }.bind(this));
+          this.chipInput = '';
+        },
+
+        removeChip(i) {
+          this.cfg.cancion.structure.splice(i, 1);
+        },
+
+        pushHistory(modoLabel) {
+          if (!this.output) return;
+          var entry = {
+            ts: new Date().toLocaleTimeString(),
+            modo: modoLabel,
+            dataset: this.datasetName,
+            preview: this.output.slice(0, 60).replace(/\s+/g, ' ').trim(),
+            output: this.output,
+            outputMeta: this.outputMeta,
+            cancionObj: this.cancionObj,
+            cancionEstructura: this.cancionEstructura.slice()
+          };
+          this.history.unshift(entry);
+          if (this.history.length > 20) this.history = this.history.slice(0, 20);
+          try { localStorage.setItem('markov_history', JSON.stringify(this.history)); } catch (e) {}
+        },
+
+        restoreHistory(i) {
+          var h = this.history[i];
+          if (!h) return;
+          this.output = h.output;
+          this.outputMeta = h.outputMeta;
+          this.cancionObj = h.cancionObj;
+          this.cancionEstructura = h.cancionEstructura || [];
+          if (h.modo.indexOf('cancion') === 0) this.modo = 'cancion';
+          else if (h.modo === 'walk') this.modo = 'walk';
+          else this.modo = 'frases';
+        },
+
+        clearHistory() {
+          this.history = [];
+          localStorage.removeItem('markov_history');
+        },
+
+        // Atajos de teclado
+        handleKey(e) {
+          if (e.ctrlKey && e.key === 'Enter') {
+            e.preventDefault();
+            if (this.modo === 'frases') this.generarFrases();
+            else if (this.modo === 'walk') this.generarWalk();
+            else if (this.modo === 'cancion') this.generarCancion();
+          } else if (e.ctrlKey && e.key.toLowerCase() === 'l') {
+            e.preventDefault(); this.limpiar();
+          } else if (e.ctrlKey && e.key.toLowerCase() === 'd') {
+            e.preventDefault(); this.toggleTheme();
+          } else if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 't') {
+            e.preventDefault(); this.probarMotor();
+          }
+        }
+      };
+    }
+
+    document.addEventListener('keydown', function (e) {
+      var root = document.body.__x ? document.body : document.querySelector('[x-data]');
+      // Alpine expone el componente en el elemento; usamos window para simplificar
+      var data = document.querySelector('[x-data]');
+      if (data && data._x_dataStack) {
+        var comp = data._x_dataStack[0];
+        if (comp && comp.handleKey) comp.handleKey(e);
+      }
+    });
+  </script>
+</body>
+</html>
