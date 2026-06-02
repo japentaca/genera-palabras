@@ -1,6 +1,6 @@
 var fs = require('fs');
 var path = require('path');
-var MarkovGenerator = require('./lib/markov-core.js');
+var MarkovGenerator = require('./public/lib/markov-core.js');
 
 var DEFAULT_STRUCTURE = ['verse', 'verse', 'chorus', 'verse', 'verse', 'chorus', 'bridge', 'chorus'];
 
@@ -79,7 +79,7 @@ function ensureDir(p) {
   if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true });
 }
 
-function cacheDir() { return path.resolve('data', 'songs'); }
+function cacheDir() { return path.resolve('public', 'data', 'songs'); }
 function cachePath(name) { return path.join(cacheDir(), name + '.json'); }
 
 function loadCache(name) {

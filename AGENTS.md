@@ -6,18 +6,24 @@ Proyecto que genera frases aleatorias usando cadenas de Markov a partir de un gr
 
 ```
 genera_palabras/
-├── lib/
-│   └── markov-core.js   # MarkovGenerator (UMD: browser + node)
-├── data/
-│   ├── data.json        # Dataset original (frases cotidianas, ~30 nodos)
-│   ├── surreal.json     # Dataset surrealista atómico (~1300 nodos)
-│   └── songs/           # Canciones generadas cacheadas (auto, no editar)
+├── src/
+│   └── pages/
+│       └── index.astro  # Interfaz web (4 modos) — migrada de root/index.html
+├── public/              # Assets estáticos servidos en la raíz del sitio
+│   ├── lib/
+│   │   └── markov-core.js   # MarkovGenerator (UMD: browser + node)
+│   └── data/
+│       ├── data.json        # Dataset original (frases cotidianas, ~30 nodos)
+│       ├── surreal.json     # Dataset surrealista atómico (~1300 nodos)
+│       └── songs/           # Canciones generadas cacheadas (auto, no editar)
 ├── test/
-│   └── smoke.js         # Smoke test de las 3 CLIs
-├── index.html           # Interfaz web completa (4 modos)
+│       └── smoke.cjs        # Smoke test de las 3 CLIs (CommonJS por el `"type": "module"` del root)
 ├── markov.js            # CLI de frases sueltas
 ├── walk.js              # CLI de walk libre (caminatas de N pasos)
 ├── song.js              # CLI de canciones estructuradas con tags
+├── package.json         # Dependencias (Astro)
+├── astro.config.mjs     # Config de Astro (output: static)
+├── _headers             # Cache-Control por tipo de asset
 └── AGENTS.md
 ```
 
@@ -27,7 +33,7 @@ Cada archivo JSON define un grafo dirigido con pesos donde los nodos representan
 
 El motor detecta el género del sujeto a partir del determinante inicial ("El/Un" → masculino, "La/Una" → femenino) y propaga ese género para que los adjetivos concuerden. Por eso los nodos `a` de `surreal.json` almacenan el segmento como objeto `{M, F}` en vez de como string plano.
 
-Toda la lógica de Markov vive en `lib/markov-core.js` (clase `MarkovGenerator`). Las tres CLIs (`markov.js`, `walk.js`, `song.js`) y la UI (`index.html`) la importan. El core es UMD: expone `module.exports` en Node y `window.MarkovGenerator` en browser.
+Toda la lógica de Markov vive en `public/lib/markov-core.js` (clase `MarkovGenerator`). Las tres CLIs (`markov.js`, `walk.js`, `song.js`) y la UI (`src/pages/index.astro`) la importan. El core es UMD: expone `module.exports` en Node y `window.MarkovGenerator` en browser.
 
 ### Formato de los datos JSON
 
@@ -61,32 +67,39 @@ Cada clave del objeto es un ID de nodo. La convención de prefijos es:
 ### CLI
 
 ```bash
-node markov.js data/surreal.json 10     # genera 10 frases surrealistas
-node markov.js data/data.json 5         # genera 5 frases cotidianas
-node walk.js data/surreal.json 30 5 3   # 5 caminatas de 30 pasos, grupo 3
-node song.js data/surreal.json          # canción con estructura default
+node markov.js public/public/data/surreal.json 10     # genera 10 frases surrealistas
+node markov.js public/data/data.json 5         # genera 5 frases cotidianas
+node walk.js public/public/data/surreal.json 30 5 3   # 5 caminatas de 30 pasos, grupo 3
+node song.js public/public/data/surreal.json          # canción con estructura default
 ```
 
-### Web
+### Web (Astro)
 
 La UI es una interfaz IDE-like con 4 modos (Frases, Walk, Canción, Dataset), selector de dataset (con fallback automático a `surreal.json`), historial en `localStorage`, atajos de teclado, inspector del dataset y descarga de canciones como JSON.
 
+**Dev con hot reload:**
 ```bash
-npx serve .                              # o python -m http.server 8000
-# abrir http://localhost:3000
+npm install
+npm run dev              # http://localhost:4321
 ```
 
-Si abrís `index.html` con doble clic (`file://`) el `fetch` falla. La UI detecta y sugiere el comando para servir. Alternativa: el botón "examinar…" permite cargar un `.json` local sin servidor.
+**Build de producción (mismo output que Pages):**
+```bash
+npm run build            # genera dist/
+npm run preview          # http://localhost:4321 sirviendo dist/
+```
+
+Si abrís el sitio con doble clic sobre `dist/index.html` (`file://`) el `fetch` falla. La UI detecta y sugiere el comando para servir. Alternativa: el botón "examinar…" permite cargar un `.json` local sin servidor.
 
 **Atajos:** `Ctrl+Enter` ejecuta el modo activo · `Ctrl+L` limpia · `Ctrl+D` toggle tema · `Ctrl+Shift+T` prueba el motor (100 walks).
 
 **Tabs:**
 - **Frases** — Cantidad + Grupo. Equivale a `markov.js <file> <n> <g>`.
 - **Walk** — Pasos + Caminatas + Grupo. Equivale a `walk.js <file> <pasos> <count> <g>`.
-- **Canción** — Estructura (chips) + Nombre + Formato (texto/JSON/plain) + Overrides (`tag=pasos`). Botón "Descargar" guarda el JSON en `data/songs/<nombre>.json` (convención de la CLI).
+- **Canción** — Estructura (chips) + Nombre + Formato (texto/JSON/plain) + Overrides (`tag=pasos`). Botón "Descargar" guarda el JSON en `public/data/songs/<nombre>.json` (convención de la CLI).
 - **Dataset** — Inspector: conteo por tipo, terminales, búsqueda de nodos, prueba del motor.
 
-**Limitación conocida:** el browser no puede escribir a `data/songs/` directamente, así que la UI siempre regenera canciones. Si querés persistir, usá "Descargar" y arrastrá el archivo a la carpeta.
+**Limitación conocida:** el browser no puede escribir a `public/data/songs/` directamente, así que la UI siempre regenera canciones. Si querés persistir, usá "Descargar" y arrastrá el archivo a la carpeta.
 
 ### Canciones estructuradas (CLI)
 
@@ -96,13 +109,13 @@ se preserva a lo largo de toda la canción en vez de resetearse por sección.
 La estructura por defecto es `[verse,verse,chorus,verse,verse,chorus,bridge,chorus]`.
 
 ```bash
-node song.js data/surreal.json                              # nueva canción random
-node song.js data/surreal.json --name mi_tema              # cachea como "mi_tema"
-node song.js data/surreal.json "intro,verse,chorus,outro"   # estructura custom
-node song.js data/surreal.json --name mi_tema --regen      # regenerar ignorando cache
-node song.js data/surreal.json --steps verse=40,chorus=20   # ajustar largo por tag
-node song.js data/surreal.json --name mi_tema --json       # salida JSON
-node song.js data/surreal.json --name mi_tema --plain      # texto plano sin tags
+node song.js public/data/surreal.json                              # nueva canción random
+node song.js public/data/surreal.json --name mi_tema              # cachea como "mi_tema"
+node song.js public/data/surreal.json "intro,verse,chorus,outro"   # estructura custom
+node song.js public/data/surreal.json --name mi_tema --regen      # regenerar ignorando cache
+node song.js public/data/surreal.json --steps verse=40,chorus=20   # ajustar largo por tag
+node song.js public/data/surreal.json --name mi_tema --json       # salida JSON
+node song.js public/data/surreal.json --name mi_tema --plain      # texto plano sin tags
 ```
 
 Con `--name` el mismo id siempre devuelve la misma canción. Dentro de la
@@ -112,7 +125,7 @@ ocurrencias. Sin `--name` se autogenera un id nuevo cada vez.
 ## Tests
 
 ```bash
-node test/smoke.js
+node test/smoke.cjs
 ```
 
 Smoke test que verifica: la clase core, las 3 CLIs (exit 0 + output no vacío), la creación de cache en `song.js`, la idempotencia del cache con `--name`, y la regeneración con `--regen`. Limpia su cache de prueba al final.
@@ -120,10 +133,10 @@ Smoke test que verifica: la clase core, las 3 CLIs (exit 0 + output no vacío), 
 ## Comandos útiles
 
 ```bash
-node markov.js data/surreal.json 10    # 10 frases
-node walk.js data/surreal.json 80 4    # caminata libre de 80 saltos, 4 caminatas
-node song.js data/surreal.json         # canción con estructura default
-node test/smoke.js                     # smoke test
+node markov.js public/data/surreal.json 10    # 10 frases
+node walk.js public/data/surreal.json 80 4    # caminata libre de 80 saltos, 4 caminatas
+node song.js public/data/surreal.json         # canción con estructura default
+node test/smoke.cjs                     # smoke test
 ```
 
 ## Consejos (lecciones aprendidas armando surreal.json)

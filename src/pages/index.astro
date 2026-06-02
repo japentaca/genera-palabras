@@ -1,12 +1,16 @@
+---
+// Markov generator UI — migrado de root/index.html, ver AGENTS.md
+---
+
 <!DOCTYPE html>
 <html lang="es" x-data="markovUI()" x-init="init()" :class="dark ? 'dark' : 'light'">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Markov — Generador de frases, walks y canciones</title>
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <script is:inline defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cascadia-code@1.0.0/css/cascadia-code.css">
-  <style>
+  <style is:inline>
     :root {
       --bg: #f3f3f3;
       --bg-2: #ffffff;
@@ -626,8 +630,8 @@
     </main>
   </div>
 
-  <script src="lib/markov-core.js"></script>
-  <script>
+  <script is:inline src="lib/markov-core.js"></script>
+  <script is:inline>
     // Lógica de canción en el browser, espejada de song.js (CLI).
     // El browser no tiene acceso a data/songs/ en disco, así que siempre
     // regenera. El "cache" sólo se materializa si el usuario descarga el JSON.

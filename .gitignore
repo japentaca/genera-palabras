@@ -1,5 +1,5 @@
 # Auto-generated cache (CLIs)
-data/songs/
+public/data/songs/
 
 # Dependencies (defensivo, no hay package.json aún)
 node_modules/
@@ -28,3 +28,7 @@ npm-debug.log*
 *.bak
 *.backup
 *.tmp
+
+# Astro
+dist/
+.astro/

@@ -1,6 +1,6 @@
 var fs = require('fs');
 var path = require('path');
-var MarkovGenerator = require('./lib/markov-core.js');
+var MarkovGenerator = require('./public/lib/markov-core.js');
 
 var args = process.argv.slice(2);
 var jsonFile = args[0];
