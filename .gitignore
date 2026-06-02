@@ -1,7 +1,4 @@
-# Auto-generated cache (CLIs)
-public/data/songs/
-
-# Dependencies (defensivo, no hay package.json aún)
+# Dependencies
 node_modules/
 
 # OS

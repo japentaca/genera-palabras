@@ -232,10 +232,4 @@ var MarkovGenerator = (function () {
   return MarkovGenerator;
 })();
 
-(function () {
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = MarkovGenerator;
-  } else if (typeof window !== 'undefined') {
-    window.MarkovGenerator = MarkovGenerator;
-  }
-})();
+export default MarkovGenerator;

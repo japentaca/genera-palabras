@@ -9,6 +9,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Markov — Generador de frases, walks y canciones</title>
   <script is:inline defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <script>
+    import MarkovGenerator from '../lib/markov-core.js';
+    window.MarkovGenerator = MarkovGenerator;
+  </script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cascadia-code@1.0.0/css/cascadia-code.css">
   <style is:inline>
     :root {
@@ -630,9 +634,8 @@
     </main>
   </div>
 
-  <script is:inline src="lib/markov-core.js"></script>
   <script is:inline>
-    // Lógica de canción en el browser, espejada de song.js (CLI).
+    // Lógica de canción en el browser, espejada de la versión anterior song.js (CLI).
     // El browser no tiene acceso a data/songs/ en disco, así que siempre
     // regenera. El "cache" sólo se materializa si el usuario descarga el JSON.
     var DEFAULT_STRUCTURE = ['verse','verse','chorus','verse','verse','chorus','bridge','chorus'];
